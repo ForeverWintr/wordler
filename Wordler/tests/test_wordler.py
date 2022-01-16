@@ -17,3 +17,7 @@ def test_character_fits():
     assert not c.fits("cczzz")
     assert not c.fits("abdce")
     assert c.fits("abcde")
+
+    # If c is not in an invalid position but invalid positions aren't ALL, we need to check that C
+    # is in the string.
+    assert not c.fits("xxxxx")
