@@ -1678,7 +1678,6 @@ dolor
 dolts
 domed
 domes
-don't
 donee
 dongs
 donna
@@ -6624,8 +6623,6 @@ waxen
 waxer
 waxes
 wayne
-we're
-we've
 weald
 weals
 weans
@@ -6868,7 +6865,6 @@ yolks
 yolky
 yonis
 yores
-you'd
 young
 yourn
 yours
