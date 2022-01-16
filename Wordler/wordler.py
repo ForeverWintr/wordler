@@ -12,8 +12,6 @@ class Character(tp.NamedTuple):
     def fits(self, word: str) -> bool:
         if self.position is not None:
             return word[self.position] == self.name
-        if self.invalid_positions is ALL:
-            return False
         for pos in self.invalid_positions:
             if word[pos] == self.name:
                 return False
@@ -21,9 +19,7 @@ class Character(tp.NamedTuple):
 
 
 def word_is_valid(word: str, known_characters: tp.Iterable[Character]) -> bool:
-    for c in known_characters:
-
-        asdf
+    return all(c.fits(word) for c in known_characters)
 
 
 def main(argv=None):

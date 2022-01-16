@@ -10,6 +10,7 @@ def test_character_fits():
 
     b = Character("b", invalid_positions=ALL)
     assert not b.fits("bbbbb")
+    assert b.fits("aaaaa")
 
     c = Character("c", invalid_positions={1, 3})
     assert c.fits("casdf")
