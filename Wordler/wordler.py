@@ -34,17 +34,17 @@ def main(argv=None):
 
     C = Character
     chars = [
-        C("a", invalid_positions={0, 1, 2}),
-        C("u", invalid_positions=ALL),
-        C("n", invalid_positions=ALL),
-        C("t", invalid_positions=ALL),
-        C("s", position=0),
         C("w", invalid_positions=ALL),
-        C("m", invalid_positions=ALL),
-        C("p", invalid_positions=ALL),
-        C("d", invalid_positions=ALL),
-        C("l", invalid_positions={3}),
+        C("e", invalid_positions=ALL),
         C("y", invalid_positions=ALL),
+        C("h", invalid_positions=ALL),
+        C("o", invalid_positions=ALL),
+        C("m", invalid_positions=ALL),
+        C("t", invalid_positions=ALL),
+        C("a", invalid_positions={2, 1, 0}),
+        C("r", invalid_positions={2, 3, 4}),
+        C("s", invalid_positions=ALL),
+        C("b", invalid_positions={0}),
     ]
 
     # Filter words.
