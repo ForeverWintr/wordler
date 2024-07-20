@@ -1,4 +1,4 @@
-from Wordler import strategy
+from Wordler import strategy, wordler
 
 
 def test_letter_freq() -> None:
@@ -14,3 +14,10 @@ def test_letter_freq() -> None:
         "j": {3: 1},
         "i": {4: 1},
     }
+
+
+def test_best_word() -> None:
+    words = ("cat", "bat", "bot")
+    # words = wordler.get_words()
+    w = strategy.best_word(words)
+    assert w == "bat"
