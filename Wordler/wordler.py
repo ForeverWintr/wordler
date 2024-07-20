@@ -28,9 +28,15 @@ def word_is_valid(word: str, known_characters: tp.Iterable[Character]) -> bool:
     return all(c.fits(word) for c in known_characters)
 
 
-def main(argv=None):
+def get_words() -> tuple[str]:
+    '''Read and return the words file'''
     all_words_fp = Path(__file__).parent.parent / "words.txt"
-    candidate_words = all_words_fp.read_text().split("\n")
+    return  all_words_fp.read_text().split("\n")
+
+
+
+def main(argv=None):
+    candidate_words = get_words()
 
     C = Character
     chars = [

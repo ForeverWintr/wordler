@@ -22,7 +22,3 @@ def test_character_fits():
     # is in the string.
     assert not c.fits("xxxxx")
 
-
-def test_letter_freq() -> None:
-
-    assert 0
