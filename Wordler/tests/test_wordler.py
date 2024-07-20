@@ -21,3 +21,8 @@ def test_character_fits():
     # If c is not in an invalid position but invalid positions aren't ALL, we need to check that C
     # is in the string.
     assert not c.fits("xxxxx")
+
+
+def test_letter_freq() -> None:
+
+    assert 0
