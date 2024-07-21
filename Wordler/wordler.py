@@ -41,6 +41,18 @@ class Character:
             # in a different position.
             self.known_not_at = set(ALL) - self.known_at
 
+    def fits(self, word: str) -> bool:
+        """Return true if this word is valid according to this character rule"""
+        known_at_valid = all(word[p] == self.name for p in self.known_at)
+        known_not_at_valid = all(word[p] != self.name for p in self.known_not_at)
+
+        # We know the character is in the word if it's known to be at some but not all positions.
+        in_word_valid = True
+        if 0 < len(self.known_not_at) < 5:
+            in_word_valid = self.name in word
+
+        return known_at_valid and known_not_at_valid and in_word_valid
+
     def _key(self) -> tuple[str, set[int], set[int]]:
         return (self.name, self.known_at, self.known_not_at)
 
@@ -52,41 +64,6 @@ class Character:
 
     def __repr__(self):
         return f"{type(self).__name__}({self.name!r}, known_at={self.known_at}, known_not_at={self.known_not_at})"
-
-
-# class Character(tp.NamedTuple):
-# name: str
-# known_position: tp.Optional[int] = None
-# invalid_positions: set[int] = set()
-
-# @classmethod
-# def from_result(cls, name: str, position: int, result: str) -> tp.Self:
-# known_position = None
-# invalid_positions = ALL
-
-# if result == "y":
-# invalid_positions = {position}
-# elif result == "g":
-# invalid_positions -= {position}
-# known_position = position
-# return cls(
-# name=name,
-# known_position=known_position,
-# invalid_positions=invalid_positions,
-# )
-
-# def fits(self, word: str) -> bool:
-# if self.known_position is not None:
-# return word[self.known_position] == self.name
-# for pos in self.invalid_positions:
-# if word[pos] == self.name:
-# return False
-# # If invalid positions isn't ALL, it means the character is in the word, we just don't know
-# # where.
-# if self.invalid_positions != ALL:
-# return self.name in word
-
-# return True
 
 
 def word_is_valid(word: str, known_characters: tp.Iterable[Character]) -> bool:

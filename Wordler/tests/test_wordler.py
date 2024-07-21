@@ -2,17 +2,24 @@ from Wordler.wordler import Character, ALL
 
 
 def test_character_fits():
-    a = Character("a", position=4)
+    s = Character("s", known_at={0}, known_not_at={1, 2, 3, 4})
+    a = Character("a", known_not_at={1})
+    assert not s.fits("sanes")
+    assert not a.fits("sanes")
+    assert s.fits("scant")
+    assert a.fits("scant")
+
+    a = Character("a", known_at={4})
 
     assert a.fits("zzzza")
     assert not a.fits("zzzzb")
     assert not a.fits("bazzz")
 
-    b = Character("b", invalid_positions=ALL)
+    b = Character("b", known_not_at=set(ALL))
     assert not b.fits("bbbbb")
     assert b.fits("aaaaa")
 
-    c = Character("c", invalid_positions={1, 3})
+    c = Character("c", known_not_at={1, 3})
     assert c.fits("casdf")
     assert not c.fits("cczzz")
     assert not c.fits("abdce")
