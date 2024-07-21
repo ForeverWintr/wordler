@@ -1,4 +1,11 @@
-from Wordler.wordler import Character, ALL, evaluate_new_information
+from Wordler.wordler import (
+    Character,
+    ALL,
+    evaluate_new_information,
+    filter_words,
+    get_words,
+)
+from Wordler import strategy
 
 
 def test_character_fits():
@@ -50,3 +57,42 @@ def test_evaluate_new_information() -> None:
         "a": Character("a", known_at=set(), known_not_at={0, 1, 2, 3, 4}),
         "n": Character("n", known_at=set(), known_not_at={0, 1, 2, 3, 4}),
     }
+
+
+def test_filter_words() -> None:
+    w = ["sanes", "atnes"]
+    r = "byggg"
+    characters = {}
+    evaluate_new_information(w[0], r, characters)
+
+    # This response rules out sanes.
+    assert filter_words(w, characters.values()) == ["atnes"]
+
+
+def test_crawl() -> None:
+    # A manual unrolling of the loop.
+    target = "crawl"
+
+    candidate_words = get_words()
+    characters = {}
+
+    assert (best_word := strategy.best_word(candidate_words)) == "sanes"
+    response = "bybbb"
+
+    evaluate_new_information(
+        word=best_word, user_response=response, characters=characters
+    )
+
+    # Now filter candidates.
+    candidate_words = filter_words(candidate_words, characters=characters.values())
+    assert target in candidate_words
+    assert (best_word := strategy.best_word(candidate_words)) == "craal"
+    response = "gggbg"
+
+    evaluate_new_information(
+        word=best_word, user_response=response, characters=characters
+    )
+
+    # Now filter candidates.
+    candidate_words = filter_words(candidate_words, characters=characters.values())
+    assert candidate_words == [target]

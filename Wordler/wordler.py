@@ -90,6 +90,27 @@ def evaluate_new_information(
         character.update(position=i, class_=resp)
 
 
+def get_input(adj: tp.Literal["first", "next"], best_word, probability: float) -> str:
+    print()
+    print(
+        f"Here is my {adj} guess. I am {probability:.2%} sure this is the right word."
+    )
+    print(f"\n{best_word}\n")
+
+    valid_input = False
+    while not valid_input:
+        response = input(
+            f"Please type {best_word!r} into wordle, then enter the resulting colors, in order. [g]reen, [y]ellow, or [b]lack:\n"
+        ).lower()
+        if len(response) == 5 and all(c in {"g", "y", "b"} for c in response):
+            valid_input = True
+        else:
+            print(
+                f"{response} isn't valid. Please enter exactly 5 characters, only using 'g', 'y', or 'b'."
+            )
+    return response
+
+
 def main(argv=None):
     candidate_words = get_words()
 
@@ -103,24 +124,8 @@ def main(argv=None):
         best_word = strategy.best_word(candidate_words)
         probability = 1 / len(candidate_words)
 
-        print()
-        print(
-            f"Here is my {adj} guess. I am {probability:.2%} sure this is the right word."
-        )
-        print(f"\n{best_word}\n")
+        response = get_input(adj, best_word, probability)
         adj = "next"
-
-        valid_input = False
-        while not valid_input:
-            response = input(
-                f"Please type {best_word!r} into wordle, then enter the resulting colors, in order. [g]reen, [y]ellow, or [b]lack:\n"
-            ).lower()
-            if len(response) == 5 and all(c in {"g", "y", "b"} for c in response):
-                valid_input = True
-            else:
-                print(
-                    f"{response} isn't valid. Please enter exactly 5 characters, only using 'g', 'y', or 'b'."
-                )
 
         evaluate_new_information(
             word=best_word, user_response=response, characters=characters
@@ -129,6 +134,13 @@ def main(argv=None):
         # Now filter candidates.
         candidate_words = filter_words(candidate_words, characters=characters.values())
         print(f"There are now {len(candidate_words)} candidate words")
+        if not candidate_words:
+            print(f"I don't know this word!")
+            break
+
+        if len(candidate_words) == 1:
+            print(f"The word is {candidate_words[0]!r}. Thanks for playing!")
+            break
 
 
 if __name__ == "__main__":
