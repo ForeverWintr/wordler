@@ -130,30 +130,6 @@ def main(argv=None):
         candidate_words = filter_words(candidate_words, characters=characters.values())
         print(f"There are now {len(candidate_words)} candidate words")
 
-    # C = Character
-    # chars = [
-    # C("w", invalid_positions=ALL),
-    # C("e", invalid_positions=ALL),
-    # C("y", invalid_positions=ALL),
-    # C("h", invalid_positions=ALL),
-    # C("o", invalid_positions=ALL),
-    # C("m", invalid_positions=ALL),
-    # C("t", invalid_positions=ALL),
-    # C("a", invalid_positions={2, 1, 0}),
-    # C("r", invalid_positions={2, 3, 4}),
-    # C("s", invalid_positions=ALL),
-    # C("b", invalid_positions={0}),
-    # ]
-
-    # # Filter words.
-    # new_candidates = []
-    # for w in candidate_words:
-    # if word_is_valid(w, chars):
-    # new_candidates.append(w)
-
-    # print(f"{len(new_candidates)} new candidates.")
-    # pprint(new_candidates)
-
 
 if __name__ == "__main__":
     main()
