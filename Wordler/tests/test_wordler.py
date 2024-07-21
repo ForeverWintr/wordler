@@ -22,3 +22,12 @@ def test_character_fits():
     # is in the string.
     assert not c.fits("xxxxx")
 
+
+def test_character_update() -> None:
+    # A is at position 0 and 3, but our guess had 3 'a's.
+    c = Character("a")
+    c.update(0, "g")
+    c.update(1, "b")
+    c.update(3, "g")
+
+    assert c == Character("a", known_at={0, 3}, known_not_at={1, 2, 4})

@@ -1,8 +1,3 @@
-from collections import defaultdict, Counter
-
-from Wordler.wordler import get_words
-
-
 def get_letter_frequencies(words: tuple[str]) -> dict[str, dict[int, int]]:
     "return a dict from {letter: {position: count}}"
     character_counts = defaultdict(lambda: defaultdict(int))
