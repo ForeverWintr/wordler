@@ -59,6 +59,7 @@ def main(argv=None):
         "Welcome to wordler. I will try to solve today's wordle. Please help by entering my guesses into wordle, and then tell me the colours of the results."
     )
 
+    characters = {}
     adj = "first"
     while True:
         best_word = strategy.best_word(candidate_words)
@@ -83,9 +84,10 @@ def main(argv=None):
                     f"{response} isn't valid. Please enter exactly 5 characters, only using 'g', 'y', or 'b'."
                 )
 
-        characters = []
         for i, (char, resp) in enumerate(zip(best_word, response)):
-            characters.append(Character.from_result(name=char, position=i, result=resp))
+            character = characters.get(
+                char, Character.from_result(name=char, position=i, result=resp)
+            )
 
         # Now filter candidates.
         new_candidates = []
