@@ -66,14 +66,28 @@ class Character:
         return f"{type(self).__name__}({self.name!r}, known_at={self.known_at}, known_not_at={self.known_not_at})"
 
 
-def word_is_valid(word: str, known_characters: tp.Iterable[Character]) -> bool:
-    return all(c.fits(word) for c in known_characters)
+def filter_words(words: tuple[str], characters: tp.Sequence[Character]) -> tuple[str]:
+    """Filter the words list based on the information we know about characters"""
+    new_words = []
+    for word in words:
+        if all(c.fits(word) for c in characters):
+            new_words.append(word)
+    return new_words
 
 
 def get_words() -> tuple[str]:
     """Read and return the words file"""
     all_words_fp = Path(__file__).parent.parent / "words.txt"
     return all_words_fp.read_text().split("\n")
+
+
+def evaluate_new_information(
+    word: str, user_response: str, characters: dict[str, Character]
+) -> None:
+    """Add new information to the characters dict based on the word and the new information from the user."""
+    for i, (char, resp) in enumerate(zip(word, user_response)):
+        character = characters.setdefault(char, Character(char))
+        character.update(position=i, class_=resp)
 
 
 def main(argv=None):
@@ -108,18 +122,13 @@ def main(argv=None):
                     f"{response} isn't valid. Please enter exactly 5 characters, only using 'g', 'y', or 'b'."
                 )
 
-        for i, (char, resp) in enumerate(zip(best_word, response)):
-            character = characters.get(
-                char, Character.from_result(name=char, position=i, result=resp)
-            )
+        evaluate_new_information(
+            word=best_word, user_response=response, characters=characters
+        )
 
         # Now filter candidates.
-        new_candidates = []
-        for w in candidate_words:
-            if word_is_valid(w, characters):
-                new_candidates.append(w)
-        candidate_words = new_candidates
-        print(f"{len(new_candidates) = }")
+        candidate_words = filter_words(candidate_words, characters=characters.values())
+        print(f"There are now {len(candidate_words)} candidate words")
 
     # C = Character
     # chars = [

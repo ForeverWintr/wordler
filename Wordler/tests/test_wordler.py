@@ -1,4 +1,4 @@
-from Wordler.wordler import Character, ALL
+from Wordler.wordler import Character, ALL, evaluate_new_information
 
 
 def test_character_fits():
@@ -38,3 +38,15 @@ def test_character_update() -> None:
     c.update(3, "g")
 
     assert c == Character("a", known_at={0, 3}, known_not_at={1, 2, 4})
+
+
+def test_evaluate_new_information() -> None:
+    characters = {}
+    evaluate_new_information("scans", "gybbb", characters)
+
+    assert characters == {
+        "s": Character("s", known_at={0}, known_not_at={1, 2, 3, 4}),
+        "c": Character("c", known_at=set(), known_not_at={1}),
+        "a": Character("a", known_at=set(), known_not_at={0, 1, 2, 3, 4}),
+        "n": Character("n", known_at=set(), known_not_at={0, 1, 2, 3, 4}),
+    }
