@@ -9,22 +9,28 @@ ALL = frozenset((0, 1, 2, 3, 4))
 
 class Character(tp.NamedTuple):
     name: str
-    position: tp.Optional[int] = None
+    known_position: tp.Optional[int] = None
     invalid_positions: set[int] = set()
 
     @classmethod
     def from_result(cls, name: str, position: int, result: str) -> tp.Self:
-        if result == "b":
-            invalid_positions = ALL
-        elif result == "y":
+        known_position = None
+        invalid_positions = ALL
+
+        if result == "y":
             invalid_positions = {position}
         elif result == "g":
-            invalid_positions = ALL - {position}
-        return cls(name=name, position=position, invalid_positions=invalid_positions)
+            invalid_positions -= {position}
+            known_position = position
+        return cls(
+            name=name,
+            known_position=known_position,
+            invalid_positions=invalid_positions,
+        )
 
     def fits(self, word: str) -> bool:
-        if self.position is not None:
-            return word[self.position] == self.name
+        if self.known_position is not None:
+            return word[self.known_position] == self.name
         for pos in self.invalid_positions:
             if word[pos] == self.name:
                 return False
@@ -87,31 +93,31 @@ def main(argv=None):
             if word_is_valid(w, characters):
                 new_candidates.append(w)
         candidate_words = new_candidates
-        break
+        print(f"{len(new_candidates) = }")
 
-    C = Character
-    chars = [
-        C("w", invalid_positions=ALL),
-        C("e", invalid_positions=ALL),
-        C("y", invalid_positions=ALL),
-        C("h", invalid_positions=ALL),
-        C("o", invalid_positions=ALL),
-        C("m", invalid_positions=ALL),
-        C("t", invalid_positions=ALL),
-        C("a", invalid_positions={2, 1, 0}),
-        C("r", invalid_positions={2, 3, 4}),
-        C("s", invalid_positions=ALL),
-        C("b", invalid_positions={0}),
-    ]
+    # C = Character
+    # chars = [
+    # C("w", invalid_positions=ALL),
+    # C("e", invalid_positions=ALL),
+    # C("y", invalid_positions=ALL),
+    # C("h", invalid_positions=ALL),
+    # C("o", invalid_positions=ALL),
+    # C("m", invalid_positions=ALL),
+    # C("t", invalid_positions=ALL),
+    # C("a", invalid_positions={2, 1, 0}),
+    # C("r", invalid_positions={2, 3, 4}),
+    # C("s", invalid_positions=ALL),
+    # C("b", invalid_positions={0}),
+    # ]
 
-    # Filter words.
-    new_candidates = []
-    for w in candidate_words:
-        if word_is_valid(w, chars):
-            new_candidates.append(w)
+    # # Filter words.
+    # new_candidates = []
+    # for w in candidate_words:
+    # if word_is_valid(w, chars):
+    # new_candidates.append(w)
 
-    print(f"{len(new_candidates)} new candidates.")
-    pprint(new_candidates)
+    # print(f"{len(new_candidates)} new candidates.")
+    # pprint(new_candidates)
 
 
 if __name__ == "__main__":
